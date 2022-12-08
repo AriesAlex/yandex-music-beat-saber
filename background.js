@@ -1,7 +1,15 @@
 modifyHeader('Access-Control-Allow-Origin', `*`, 'https://bsaber.com/*')
 modifyHeader('Access-Control-Allow-Origin', `*`, 'https://cdn.beatsaver.com/*')
-modifyHeader('Content-Security-Policy', `*`, 'https://cdn.beatsaver.com/*')
-modifyHeader('Content-Security-Policy', '*', 'https://music.yandex.ru/*')
+modifyHeader(
+  'Content-Security-Policy',
+  `default-src * 'unsafe-inline' 'unsafe-eval' data: blob:; `,
+  'https://cdn.beatsaver.com/*'
+)
+modifyHeader(
+  'Content-Security-Policy',
+  `default-src * 'unsafe-inline' 'unsafe-eval' data: blob:; `,
+  'https://music.yandex.ru/*'
+)
 
 function modifyHeader(name, value, url) {
   chrome.webRequest.onHeadersReceived.addListener(

@@ -162,6 +162,7 @@ const styles = `
   background-color: #121212;
   transition: .25s opacity;
   max-height: 200px;
+  max-width: 800px;
   overflow-y: scroll;
   z-index: 10;
   box-shadow: 2px  2px 5px 1px #009acf,

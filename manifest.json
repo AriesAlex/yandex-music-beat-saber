@@ -1,0 +1,21 @@
+{
+   "name": "YandexMusic BeatSaber",
+   "version": "1.0",
+   "author": "ArieX",
+   "description": "Показ доступности мелодий в Beat Saber",
+   "content_scripts": [ {
+      "js": [ "main.js" ],
+      "matches": [ "*://music.yandex.ru/*" ],
+      "run_at": "document_idle"
+   } ],
+   "background": {
+      "scripts": ["background.js"]
+    },
+   "host_permissions": [ "*://music.yandex.ru/*" ],
+   "manifest_version": 2,
+   "permissions": [
+     "webRequest",
+     "webRequestBlocking",
+     "*://*/*"
+   ]
+}

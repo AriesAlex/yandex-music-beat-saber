@@ -74,14 +74,15 @@ async function processSong(songEl) {
   const bsPopup = songEl.getElementsByClassName('bsPopup')[0]
   for (const article of song.articles) {
     bsPopup.innerHTML += `
-    <a class="bsArticle" href="${article.pageUrl}">
+    <div class="bsArticle">
       <div class="image" style="background-image: url(${article.imageUrl})"></div>
-      <div class="title">${article.title}</div>
+      <div class="preview d-icon_play"></div>
+      <a class="title" href="${article.pageUrl}">${article.title}</a>
       <div class="scores">
         <div class="likes">${article.likes}</div>
         <div class="dislikes">${article.dislikes}</div>
       </div>
-    </a>
+    </div>
     `
   }
 }
@@ -142,14 +143,13 @@ const styles = `
   width: 100%;
   display: flex;
   align-items: center;
-  cursor: pointer;
-  text-decoration: none;
-  color: white;
-  transition: .25s transform;
-  transform: scale(1);
 }
-.beatsaber .bsPopup .bsArticle:hover {
-  transform: scale(.95);
+.beatsaber .bsPopup .bsArticle .preview {
+  cursor: pointer;
+  min-height: 24px;
+  min-width:  24px;
+  width:      24px;
+  height:     24px;
 }
 .beatsaber .bsPopup .bsArticle .image {
   min-height: 32px;
@@ -161,9 +161,17 @@ const styles = `
   display: none;
 }
 .beatsaber .bsPopup .bsArticle .title {
+  width: 100%;
+  color: white;
   margin: 0 15px;
   text-align: center;
-  width: 100%;
+  text-decoration: none;
+  transition: .25s transform;
+  transform: scale(1);
+  cursor: pointer;
+}
+.beatsaber .bsPopup .bsArticle .title:hover {
+  transform: scale(.95);
 }
 .beatsaber .bsPopup .bsArticle .scores {
   display: flex;

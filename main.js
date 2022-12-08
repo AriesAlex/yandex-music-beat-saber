@@ -75,6 +75,7 @@ async function processSong(songEl) {
   for (const article of song.articles) {
     bsPopup.innerHTML += `
     <a class="bsArticle" href="${article.pageUrl}">
+      <div class="image" style="background-image: url(${article.imageUrl})"></div>
       <div class="title">${article.title}</div>
       <div class="scores">
         <div class="likes">${article.likes}</div>
@@ -140,6 +141,7 @@ const styles = `
 .beatsaber .bsPopup .bsArticle {
   width: 100%;
   display: flex;
+  align-items: center;
   cursor: pointer;
   text-decoration: none;
   color: white;
@@ -149,8 +151,17 @@ const styles = `
 .beatsaber .bsPopup .bsArticle:hover {
   transform: scale(.95);
 }
+.beatsaber .bsPopup .bsArticle .image {
+  min-height: 32px;
+  min-width:  32px;
+  width:      32px;
+  height:     32px;
+  background-position: center;
+  background-size: cover;
+  display: none;
+}
 .beatsaber .bsPopup .bsArticle .title {
-  margin-right: 15px;
+  margin: 0 15px;
   text-align: center;
   width: 100%;
 }
@@ -167,6 +178,9 @@ const styles = `
 .beatsaber:hover .bsPopup {
   opacity: 1;
   pointer-events: initial;
+}
+.beatsaber:hover .bsPopup .image {
+  display: block;
 }
 .bsLoading {
   background-image: linear-gradient(to right, #d50403, #009acf);

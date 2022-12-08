@@ -2,9 +2,16 @@ const config = {
   showLoading: true,
   autoUpdateCache: false,
   autoUpdateCacheIntervalInDays: 30,
+  sortSongsBy: 'rating', // default, rating
 }
 
+const audioPlayer = new Audio()
+let audioEndedTimer = null
+let lastPreviewBtn = null
+let isPlaying = false
+
 async function fetchArticles(songName) {
+  console.debug('[YS<=>BS] Fetching', songName)
   const resp = await fetch('https://bsaber.com/?s=' + songName)
   const respText = await resp.text()
 
@@ -14,8 +21,8 @@ async function fetchArticles(songName) {
   const articles = [...root.getElementsByTagName('article')]
     .filter(el => el.getElementsByClassName('post-stat').length > 0)
     .map(el => ({
-      title: el.querySelector('a[rel=bookmark]').title,
-      pageUrl: el.querySelector('a[rel=bookmark]').href,
+      title: el.querySelector('.entry-title').children[0].title,
+      pageUrl: el.querySelector('.entry-title').children[0].href,
       imageUrl: el.querySelector('img').getAttribute('data-original'),
       previewUrl: el
         .querySelector('a.-listen')
@@ -44,7 +51,9 @@ function isSongInfoOutdated(lsKey) {
   return difference >= dayInMs * config.autoUpdateCacheIntervalInDays
 }
 async function processSong(songEl) {
-  const songName = songEl.getElementsByClassName('d-track__name')[0].title
+  const songName = songEl
+    .getElementsByClassName('d-track__name')[0]
+    .children[0].textContent.trim()
 
   const bsEl = document.createElement('div')
   const container = songEl.getElementsByClassName(
@@ -66,24 +75,53 @@ async function processSong(songEl) {
     return
   }
   bsEl.innerHTML = `
-    <div class="beatsaber">
+    <div class="beatsaber" ondblclick='event.stopPropagation()' onclick='event.stopPropagation()'>
       <div class="bsButton">${song.articles.length}</div>
       <div class="bsPopup"></div>
     </div>
   `
   const bsPopup = songEl.getElementsByClassName('bsPopup')[0]
+  if (config.sortSongsBy == 'rating')
+    song.articles.sort((songA, songB) => {
+      const songAPoints = songA.likes - songA.dislikes
+      const songBPoints = songB.likes - songB.dislikes
+      return songBPoints - songAPoints
+    })
   for (const article of song.articles) {
-    bsPopup.innerHTML += `
+    const bsArticle = document.createElement('div')
+    bsPopup.appendChild(bsArticle)
+    bsArticle.innerHTML = `
     <div class="bsArticle">
       <div class="image" style="background-image: url(${article.imageUrl})"></div>
       <div class="preview d-icon_play"></div>
-      <a class="title" href="${article.pageUrl}">${article.title}</a>
+      <a class="title" href="${article.pageUrl}" target="_blank">${article.title}</a>
       <div class="scores">
         <div class="likes">${article.likes}</div>
         <div class="dislikes">${article.dislikes}</div>
       </div>
     </div>
     `
+    const previewBtn = bsArticle.getElementsByClassName('preview')[0]
+    previewBtn.onclick = () => {
+      if (lastPreviewBtn) lastPreviewBtn.className = 'preview d-icon_play'
+      previewBtn.className = 'preview d-icon_pause'
+      if (lastPreviewBtn == previewBtn && isPlaying) {
+        previewBtn.className = 'preview d-icon_play'
+        isPlaying = false
+        lastPreviewBtn = previewBtn
+        audioPlayer.pause()
+        return
+      }
+      audioPlayer.src = article.previewUrl
+      audioPlayer.play()
+      isPlaying = true
+      if (audioEndedTimer) clearTimeout(audioEndedTimer)
+      audioEndedTimer = setTimeout(() => {
+        if (isPlaying) previewBtn.click()
+      }, 10000)
+      lastPreviewBtn = previewBtn
+      return
+    }
   }
 }
 
@@ -159,6 +197,7 @@ const styles = `
   background-position: center;
   background-size: cover;
   display: none;
+  margin-right: 5px;
 }
 .beatsaber .bsPopup .bsArticle .title {
   width: 100%;

@@ -15,7 +15,12 @@ async function fetchArticles(songName) {
     .filter(el => el.getElementsByClassName('post-stat').length > 0)
     .map(el => ({
       title: el.querySelector('a[rel=bookmark]').title,
-      url: el.querySelector('a[rel=bookmark]').href,
+      pageUrl: el.querySelector('a[rel=bookmark]').href,
+      imageUrl: el.querySelector('img').getAttribute('data-original'),
+      previewUrl: el
+        .querySelector('a.-listen')
+        .getAttribute('onclick')
+        .slice(68, -2),
       likes: Number(
         el
           .getElementsByClassName('post-stat')[1]
@@ -69,7 +74,7 @@ async function processSong(songEl) {
   const bsPopup = songEl.getElementsByClassName('bsPopup')[0]
   for (const article of song.articles) {
     bsPopup.innerHTML += `
-    <a class="bsArticle" href="${article.url}">
+    <a class="bsArticle" href="${article.pageUrl}">
       <div class="title">${article.title}</div>
       <div class="scores">
         <div class="likes">${article.likes}</div>

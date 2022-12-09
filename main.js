@@ -149,6 +149,7 @@ const styles = `
   display: flex;
   justify-content: center;
   align-items: center;
+  color: #f4f4f4;
 }
 .beatsaber .bsPopup {
   cursor: initial;
@@ -202,7 +203,7 @@ const styles = `
 }
 .beatsaber .bsPopup .bsArticle .title {
   width: 100%;
-  color: white;
+  color: inherit;
   margin: 0 15px;
   text-align: center;
   text-decoration: none;
@@ -230,6 +231,13 @@ const styles = `
 }
 .beatsaber:hover .bsPopup .image {
   display: block;
+}
+.theme-white .beatsaber .bsPopup {
+  background-color: #f6f5f3;
+}
+.theme-white .beatsaber .bsPopup .bsArticle .scores {
+  font-weight: 700;
+  color: #fff;
 }
 .bsLoading {
   background-image: linear-gradient(to right, #d50403, #009acf);

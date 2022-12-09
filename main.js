@@ -209,6 +209,7 @@ const styles = `
   transition: .25s transform;
   transform: scale(1);
   cursor: pointer;
+  overflow: hidden;
 }
 .beatsaber .bsPopup .bsArticle .title:hover {
   transform: scale(.95);

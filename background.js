@@ -2,12 +2,12 @@ modifyHeader('Access-Control-Allow-Origin', `*`, 'https://bsaber.com/*')
 modifyHeader('Access-Control-Allow-Origin', `*`, 'https://cdn.beatsaver.com/*')
 modifyHeader(
   'Content-Security-Policy',
-  `default-src * 'unsafe-inline' 'unsafe-eval' data: blob:; `,
+  `default-src * 'unsafe-inline' 'unsafe-eval' data: blob:;`,
   'https://cdn.beatsaver.com/*'
 )
 modifyHeader(
   'Content-Security-Policy',
-  `default-src * 'unsafe-inline' 'unsafe-eval' data: blob:; `,
+  `default-src * 'unsafe-inline' 'unsafe-eval' data: blob:;`,
   'https://music.yandex.ru/*'
 )
 

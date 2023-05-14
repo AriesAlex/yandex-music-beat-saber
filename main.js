@@ -23,7 +23,7 @@ async function fetchArticles(songName) {
     .map(el => ({
       title: el.querySelector('.entry-title').children[0].title,
       pageUrl: el.querySelector('.entry-title').children[0].href,
-      imageUrl: el.querySelector('img').getAttribute('data-original'),
+      imageUrl: el.querySelector('img')?.getAttribute('data-original'),
       previewUrl: el
         .querySelector('a.-listen')
         .getAttribute('onclick')
